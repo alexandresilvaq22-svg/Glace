@@ -21,7 +21,7 @@ export interface UserProfile {
   goal: Goal;
   language: AppLanguage;
   profession?: string;
-  weeklyFrequency: number; // days per week
+  weeklyFrequency: number;
   knownCommonWords: string[];
 }
 
@@ -30,8 +30,9 @@ export interface PracticeCycle {
   userId: string;
   name: string;
   words: string[];
-  durationDays: number; // e.g., 4
-  daysOfWeek: number[]; // 0-6
+  durationDays: number;
+  notificationsPerDay: number;
+  daysOfWeek: number[]; // 0-6 (Sunday to Saturday)
   status: 'active' | 'completed' | 'paused';
   startDate: string;
 }
@@ -46,4 +47,4 @@ export interface NotificationContent {
   type: 'word' | 'sentence' | 'text';
 }
 
-export type AppState = 'onboarding' | 'dashboard' | 'create-cycle' | 'settings' | 'history';
+export type AppState = 'welcome' | 'onboarding' | 'dashboard' | 'create-cycle' | 'settings' | 'history';
