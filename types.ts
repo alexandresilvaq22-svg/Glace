@@ -23,6 +23,8 @@ export interface UserProfile {
   profession?: string;
   weeklyFrequency: number;
   knownCommonWords: string[];
+  trialStartDate: string; // ISO String
+  isSubscribed: boolean;
 }
 
 export interface PracticeCycle {
@@ -32,7 +34,7 @@ export interface PracticeCycle {
   words: string[];
   durationDays: number;
   notificationsPerDay: number;
-  daysOfWeek: number[]; // 0-6 (Sunday to Saturday)
+  daysOfWeek: number[];
   status: 'active' | 'completed' | 'paused';
   startDate: string;
 }

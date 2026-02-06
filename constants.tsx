@@ -7,18 +7,19 @@ export const BRAND_COLORS = {
   bg: '#f8fafc'
 };
 
-export const CYCLE_RULES = {
-  DAYS_1_2: 'Single word focus. One notification per word.',
-  DAY_3: 'AI-Generated sentences using cycle words + common vocabulary.',
-  DAY_4: 'Final AI-Generated context text for complete review.'
-};
-
-export const PROFESSION_OPTIONS = [
-  'Software Engineer',
-  'Graphic Designer',
-  'Marketing Specialist',
-  'Doctor/Medical',
-  'Business Manager',
-  'Sales Representative',
-  'Academic/Student'
+export const TESTIMONIALS = [
+  { name: "Carlos M.", text: "Comecei sem saber nada e hoje já consigo formar frases.", stars: 5 },
+  { name: "Ana P.", text: "Gostei porque não preciso abrir o app toda hora.", stars: 5 },
+  { name: "João R.", text: "As notificações ajudam muito a criar rotina.", stars: 5 }
 ];
+
+export const TRIAL_DURATION_DAYS = 2;
+
+export const HUMAN_MESSAGES = {
+  welcome: "Bora praticar?",
+  encouragement: "Só 2 minutinhos agora!",
+  praise: "Você tá indo bem 👏",
+  trial_active: "🎁 Teste gratuito ativo",
+  trial_ending: "⏰ Seu teste gratuito termina amanhã.",
+  trial_expired: "Para continuar praticando com o PraticaAí, ative seu plano."
+};
