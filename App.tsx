@@ -18,7 +18,10 @@ import {
   X,
   Star,
   Lock,
-  CreditCard
+  CreditCard,
+  User as UserIcon,
+  CheckCircle2,
+  Clock
 } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -88,10 +91,11 @@ const App: React.FC = () => {
     setView('dashboard');
   };
 
-  const SidebarItem = ({ icon: Icon, label, active, onClick }: any) => (
+  const SidebarItem = ({ icon: Icon, label, active, onClick, disabled }: any) => (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all ${active ? 'bg-slate-100 text-black font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-black'}`}
+      disabled={disabled}
+      className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all ${disabled ? 'opacity-40 cursor-not-allowed' : ''} ${active ? 'bg-slate-100 text-black font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-black'}`}
     >
       <Icon className={`w-5 h-5 ${active ? 'text-indigo-600' : 'text-slate-400'}`} />
       <span className="text-sm">{label}</span>
@@ -101,8 +105,7 @@ const App: React.FC = () => {
   const renderWelcome = () => (
     <div className="w-full min-h-screen bg-white flex flex-col items-center p-6 md:p-12 animate-in fade-in duration-700">
       <div className="max-w-6xl w-full flex flex-col items-center text-center">
-        {/* Logo Clicável */}
-        <button onClick={handleLogoClick} className="w-full max-w-[90vw] md:w-[48rem] md:h-[32rem] mt-4 -mb-16 relative flex items-center justify-center transform hover:scale-105 transition-transform duration-700 ease-out">
+        <button onClick={handleLogoClick} className="w-full max-w-[90vw] md:w-[48rem] md:h-[32rem] mt-4 -mb-16 relative flex items-center justify-center transform hover:scale-105 transition-transform duration-700 ease-out focus:outline-none">
           <img src={LOGO_URL} alt="PraticaAí Logo" className="w-full h-full object-contain" />
         </button>
         
@@ -125,12 +128,11 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Prova Social */}
         <div className="w-full max-w-5xl mt-24 space-y-12">
           <h3 className="text-slate-400 font-black uppercase tracking-widest text-sm">O que dizem sobre o PraticaAí</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-slate-50 p-8 rounded-[2.5rem] text-left space-y-4 border border-slate-100">
+              <div key={i} className="bg-slate-50 p-8 rounded-[2.5rem] text-left space-y-4 border border-slate-100 shadow-sm">
                 <div className="flex gap-1 text-yellow-400">
                   {Array.from({length: t.stars}).map((_, j) => <Star key={j} className="w-4 h-4 fill-current" />)}
                 </div>
@@ -149,12 +151,11 @@ const App: React.FC = () => {
 
     return (
       <div className="space-y-10 animate-in fade-in duration-500">
-        {/* Banner de Trial */}
         {!user?.isSubscribed && (
-          <div className={`p-6 rounded-[2rem] border-2 flex items-center justify-between transition-all ${trialInfo?.expired ? 'bg-red-50 border-red-100 text-red-900' : 'bg-indigo-50 border-indigo-100 text-indigo-900'}`}>
+          <div className={`p-6 rounded-[2rem] border-2 flex flex-col md:flex-row items-center justify-between gap-6 transition-all ${trialInfo?.expired ? 'bg-red-50 border-red-100 text-red-900' : 'bg-indigo-50 border-indigo-100 text-indigo-900'}`}>
             <div className="flex items-center gap-4">
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${trialInfo?.expired ? 'bg-red-100' : 'bg-white shadow-sm'}`}>
-                {trialInfo?.expired ? <Lock className="w-6 h-6" /> : <Zap className="w-6 h-6" />}
+                {trialInfo?.expired ? <Lock className="w-6 h-6 text-red-600" /> : <Zap className="w-6 h-6 text-indigo-600" />}
               </div>
               <div>
                 <p className="font-black text-lg">
@@ -165,8 +166,8 @@ const App: React.FC = () => {
                 </p>
               </div>
             </div>
-            <button className={`px-6 py-3 rounded-xl font-black text-sm transition-all shadow-sm ${trialInfo?.expired ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-white text-indigo-600 hover:bg-slate-50'}`}>
-              Ativar Plano
+            <button className={`w-full md:w-auto px-8 py-4 rounded-xl font-black text-sm transition-all shadow-sm ${trialInfo?.expired ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-white text-indigo-600 hover:bg-slate-50'}`}>
+              Ativar Plano agora
             </button>
           </div>
         )}
@@ -183,45 +184,47 @@ const App: React.FC = () => {
         </header>
 
         {trialInfo?.expired ? (
-          <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-[4rem] p-24 text-center space-y-8 flex flex-col items-center">
-            <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-sm">
-              <Lock className="w-12 h-12 text-slate-300" />
-            </div>
+          <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-[4rem] p-16 text-center space-y-8 flex flex-col items-center">
+            <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center shadow-sm"><Lock className="w-10 h-10 text-slate-300" /></div>
             <div className="max-w-md space-y-4">
-              <h3 className="text-3xl font-black text-black">Acesso Bloqueado</h3>
-              <p className="text-slate-500 font-medium text-lg">Seu período de 2 dias de teste chegou ao fim. Ative seu plano para voltar a receber notificações e criar novos ciclos.</p>
+              <h3 className="text-3xl font-black text-black">Bora assinar?</h3>
+              <p className="text-slate-500 font-medium text-lg leading-relaxed">Seu teste de 2 dias acabou. Para continuar recebendo notificações e evoluindo seu inglês, escolha um plano.</p>
             </div>
             <button className="flex items-center gap-3 px-12 py-5 bg-black text-white rounded-2xl font-black text-xl hover:bg-slate-900 transition-all shadow-xl">
-              <CreditCard className="w-6 h-6" /> Assinar PraticaAí
+              <CreditCard className="w-6 h-6" /> Ver Planos
             </button>
           </div>
         ) : !activeCycle ? (
           <div className="bg-white border-2 border-slate-100 rounded-[4rem] p-20 text-center space-y-8 flex flex-col items-center shadow-sm">
             <div className="w-28 h-28 bg-slate-50 rounded-full flex items-center justify-center"><PlusCircle className="w-14 h-14 text-slate-300" /></div>
             <div className="max-w-md space-y-3">
-              <h3 className="text-4xl font-black text-black tracking-tight">Crie seu primeiro ciclo</h3>
-              <p className="text-slate-600 font-medium text-xl">Defina as palavras que quer dominar hoje.</p>
+              <h3 className="text-4xl font-black text-black tracking-tight leading-tight">Vamos criar seu primeiro ciclo?</h3>
+              <p className="text-slate-600 font-medium text-xl">Só 2 minutinhos agora para garantir sua prática do dia todo.</p>
             </div>
-            <button onClick={() => setView('create-cycle')} className="px-12 py-5 bg-black text-white rounded-2xl font-black text-xl hover:bg-slate-900 transition-all">Criar Novo Ciclo</button>
+            <button onClick={() => setView('create-cycle')} className="px-12 py-5 bg-black text-white rounded-2xl font-black text-xl hover:bg-slate-900 transition-all shadow-lg active:scale-95">Criar Novo Ciclo</button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-10">
-            {/* Cards de progresso idênticos ao anterior, apenas com textos mais próximos */}
-             <div className="bg-white p-12 rounded-[4rem] shadow-sm border border-slate-100 space-y-10">
+            <div className="bg-white p-12 rounded-[4rem] shadow-sm border border-slate-100 space-y-10">
               <div className="flex items-center justify-between">
-                <h3 className="font-black text-3xl text-black">Status do Ciclo</h3>
-                <span className="px-6 py-2 bg-black text-white text-xs font-black rounded-full uppercase tracking-widest">Ativo</span>
+                <h3 className="font-black text-3xl text-black">Ciclo Ativo</h3>
+                <span className="px-6 py-2 bg-indigo-600 text-white text-xs font-black rounded-full uppercase tracking-widest">Praticando</span>
               </div>
               <div className="space-y-10">
                 <div className="space-y-4">
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Palavras deste ciclo</p>
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Suas palavras</p>
                   <div className="flex flex-wrap gap-3">
                     {activeCycle.words.map(w => (
-                      <span key={w} className="px-6 py-3 bg-slate-50 rounded-2xl text-base font-bold text-black">{w}</span>
+                      <span key={w} className="px-6 py-3 bg-slate-50 rounded-2xl text-base font-bold text-black border border-slate-100">{w}</span>
                     ))}
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-slate-50 p-12 rounded-[4rem] border border-slate-200 flex flex-col justify-center space-y-6">
+              <h4 className="font-black text-xl text-black leading-tight italic">“{TESTIMONIALS[Math.floor(Math.random() * TESTIMONIALS.length)].text}”</h4>
+              <p className="text-sm font-black text-indigo-600 uppercase tracking-widest">— Prova Social do PraticaAí</p>
             </div>
           </div>
         )}
@@ -229,13 +232,93 @@ const App: React.FC = () => {
     );
   };
 
+  const renderHistory = () => (
+    <div className="space-y-10 animate-in slide-in-from-right-4 duration-500">
+      <div className="space-y-2">
+        <h2 className="text-4xl font-black text-black">Seu Histórico</h2>
+        <p className="text-slate-600 font-medium">Veja o quanto você já evoluiu por aqui.</p>
+      </div>
+      
+      {cycles.length === 0 ? (
+        <div className="bg-white rounded-[4rem] border-2 border-slate-50 p-32 text-center space-y-6">
+          <HistoryIcon className="w-16 h-16 text-slate-200 mx-auto" />
+          <p className="text-slate-400 font-black uppercase tracking-widest text-sm">Nenhum ciclo concluído ainda.</p>
+        </div>
+      ) : (
+        <div className="grid gap-6">
+          {cycles.map(c => (
+            <div key={c.id} className="bg-white p-8 rounded-3xl border border-slate-100 flex items-center justify-between shadow-sm">
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center"><CheckCircle2 className="text-green-600 w-8 h-8" /></div>
+                <div>
+                  <h4 className="font-black text-xl text-black">{c.name}</h4>
+                  <p className="text-slate-500 font-medium">{c.words.length} palavras dominadas • {c.durationDays} dias</p>
+                </div>
+              </div>
+              <span className="text-xs font-black text-slate-300 uppercase tracking-widest">Concluído</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderSettings = () => (
+    <div className="space-y-10 animate-in slide-in-from-right-4 duration-500">
+      <div className="space-y-2">
+        <h2 className="text-4xl font-black text-black">Ajustes</h2>
+        <p className="text-slate-600 font-medium">Configure sua experiência no PraticaAí.</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white p-10 rounded-[3rem] border border-slate-100 space-y-8 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <UserIcon className="text-indigo-600 w-6 h-6" />
+            <h3 className="font-black text-xl">Perfil do Estudante</h3>
+          </div>
+          <div className="space-y-6">
+            <div className="space-y-1">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email</p>
+              <p className="font-bold text-black">{user?.email}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nível de Inglês</p>
+              <p className="font-bold text-black">{user?.level === EnglishLevel.BEGINNER ? 'Iniciante' : 'Intermediário'}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Frequência de Notificações</p>
+              <p className="font-bold text-black">{user?.weeklyFrequency} dias por semana</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-10 rounded-[3rem] border border-slate-100 space-y-8 shadow-sm">
+          <div className="flex items-center gap-4 mb-4">
+            <CreditCard className="text-indigo-600 w-6 h-6" />
+            <h3 className="font-black text-xl">Assinatura</h3>
+          </div>
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-black text-black uppercase tracking-widest">Plano Atual</p>
+              <p className="font-bold text-slate-500">{user?.isSubscribed ? 'Premium' : 'Teste Gratuito'}</p>
+            </div>
+            {!user?.isSubscribed && <span className="text-indigo-600 font-black text-xs uppercase tracking-widest">Faltam {trialInfo?.daysLeft} dias</span>}
+          </div>
+          <button className="w-full py-4 bg-black text-white rounded-2xl font-black text-sm hover:bg-slate-900 transition-all">
+            {user?.isSubscribed ? 'Gerenciar Plano' : 'Ativar Premium'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-white overflow-x-hidden selection:bg-indigo-100 selection:text-indigo-900">
       {view === 'welcome' ? renderWelcome() : (
         <div className="flex min-h-screen">
           {view !== 'onboarding' && (
             <aside className="w-80 border-r border-slate-100 bg-white p-12 flex flex-col hidden lg:flex sticky top-0 h-screen shrink-0">
-              <button onClick={handleLogoClick} className="flex items-center gap-4 mb-16 hover:opacity-80 transition-opacity">
+              <button onClick={handleLogoClick} className="flex items-center gap-4 mb-16 hover:opacity-80 transition-opacity focus:outline-none">
                 <div className="w-16 h-16 relative flex items-center justify-center">
                   <img src={LOGO_URL} alt="Logo" className="w-full h-full object-contain" />
                 </div>
@@ -243,7 +326,13 @@ const App: React.FC = () => {
               </button>
               <nav className="space-y-3 flex-1">
                 <SidebarItem icon={LayoutDashboard} label="Painel" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
-                <SidebarItem icon={PlusCircle} label="Novo Ciclo" active={view === 'create-cycle'} onClick={() => !trialInfo?.expired && setView('create-cycle')} />
+                <SidebarItem 
+                  icon={PlusCircle} 
+                  label="Novo Ciclo" 
+                  active={view === 'create-cycle'} 
+                  onClick={() => !trialInfo?.expired && setView('create-cycle')} 
+                  disabled={trialInfo?.expired}
+                />
                 <SidebarItem icon={HistoryIcon} label="Histórico" active={view === 'history'} onClick={() => setView('history')} />
                 <SidebarItem icon={SettingsIcon} label="Ajustes" active={view === 'settings'} onClick={() => setView('settings')} />
               </nav>
@@ -257,6 +346,8 @@ const App: React.FC = () => {
               {view === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
               {view === 'dashboard' && renderDashboard()}
               {view === 'create-cycle' && <CreateCycleWizard onComplete={handleCreateCycle} onCancel={() => setView('dashboard')} />}
+              {view === 'history' && renderHistory()}
+              {view === 'settings' && renderSettings()}
             </div>
           </main>
         </div>
