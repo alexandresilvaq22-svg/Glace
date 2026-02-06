@@ -16,12 +16,14 @@ export type AppLanguage = 'pt' | 'en';
 
 export interface UserProfile {
   id: string;
+  name: string;
   email: string;
   level: EnglishLevel;
   goal: Goal;
   language: AppLanguage;
   profession?: string;
   weeklyFrequency: number;
+  notificationsPerDay: number;
   knownCommonWords: string[];
   trialStartDate: string; // ISO String
   isSubscribed: boolean;
